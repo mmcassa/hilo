@@ -17,3 +17,10 @@ def SiteMapAPI(request):
         }
     ]
     return Response(sites)
+
+@api_view(['GET'])
+def TestAPI(request):
+    """
+    Test API
+    """
+    return Response("Your test worked!")
