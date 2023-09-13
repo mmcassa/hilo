@@ -43,6 +43,12 @@
         </div>
         <div>
             <div>
+                <div>
+                    <b>API Links</b>
+                </div>
+                <div *ngFor="let o of sitemap">
+                    <a class="api-link" href="{{o['uri']}}" target="_blank">{{o['name']}}</a>
+                </div>
                 <app-sidenav-list></app-sidenav-list>
             </div>
         </div>

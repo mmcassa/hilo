@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject, Observable, map, startWith } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { BootService } from 'src/app/services/boot.service';
 
 @Component({
   selector: 'app-sidenav-bar',
@@ -16,7 +17,16 @@ export class SidenavBarComponent implements OnInit {
     'Testing 1','Another Test 2', 'How do birds fly?','Where is my optomologist today?'
   ]);
   searchOptions: Observable<string[]> = new Observable<string[]>();
-  constructor(private auth: AuthService) {
+  sitemap: any[] = [];
+  constructor(private auth: AuthService,
+              private boot: BootService) {
+    //
+    boot.getSiteMap().subscribe({
+      next: val => {
+        this.sitemap = val;
+        console.log(val)
+      }
+    });
   }
 
   ngOnInit(): void {
