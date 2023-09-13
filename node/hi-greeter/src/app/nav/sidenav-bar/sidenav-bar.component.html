@@ -1,0 +1,50 @@
+<div id="snav-bar-container">
+    <div id="snav-mini">
+        <div id="snav-mini-logo">
+            <mat-icon color="primary">donut_large</mat-icon>
+        </div>
+        <div id="snav-mini-btns">
+            <app-sidenav-mini-btn ngbTooltip="Home" placement="bottom" [icon]="'home'" [route]="''"></app-sidenav-mini-btn>
+            <app-sidenav-mini-btn ngbTooltip="Games" placement="bottom" [icon]="'gamepad'" [route]=""></app-sidenav-mini-btn>
+            
+        </div>
+        <footer>
+            <app-sidenav-mini-btn ngbTooltip="Login" [icon]="'login'" placement="top" [route]="'login'"></app-sidenav-mini-btn>
+            
+        </footer>
+    </div>
+    <div *ngIf="isLoggedIn()" id="snav-expanded" [style.width.px]="250" [style.height]="'100%'">
+        <div class="sn-expand-header">
+            <div>
+                <h6>Home</h6>
+            </div>
+        </div>
+        <div>
+            <form>
+                <!-- <mat-form-field> -->
+                  <!-- <mat-label>Search</mat-label> -->
+                  <div class="w-100 pr-3">
+                    <input type="text"
+                            [style.width]="'100%'"
+                            placeholder="Search"
+                            aria-label="Search"
+                            hiloInput
+                            [formControl]="searchFC"
+                            [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of searchOptions | async" [value]="option">
+                        {{option}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <!-- </mat-form-field> -->
+                </div>
+              </form>
+              
+        </div>
+        <div>
+            <div>
+                <app-sidenav-list></app-sidenav-list>
+            </div>
+        </div>
+    </div>
+</div>
