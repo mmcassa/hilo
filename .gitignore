@@ -3,4 +3,5 @@ env/
 *node_modules/
 *.angular/
 .vscode/
+backend/db.sqlite3
 web/settings.json
