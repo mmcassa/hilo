@@ -12,20 +12,36 @@ from chess import GameStatus
 from api import ProtectedAPIView
 import chess
 
-class AcceptGameAPI(ProtectedAPIView):
-    def post(self,request):
+class GameRequestResponseAPI(ProtectedAPIView):
+    """
+    Accept or decline a game request. 
+    @arg kwargs["response"] is the response value
+    """
+    def post(self,request,**kwargs):
         if "id" not in request.data:
             return Response("No Game Id provided",status.HTTP_400_BAD_REQUEST)
         try:
             game = ChessGame.objects.get(pk=request.data["id"])
         except:
             return Response("Invalid Game ID provided",status.HTTP_400_BAD_REQUEST)
-        if game.opponent != request.user:
-            return Response("This is not your game to accept...",status.HTTP_401_UNAUTHORIZED)
-        game.startGame()
+        try:
+            player = Player.objects.get(userid=request.user)
+        except:
+            return Response("You don't have a player created!",status.HTTP_400_BAD_REQUEST)
+        if kwargs["response"] == 1:
+            if not game.acceptGame(player):
+                return Response("This is not your game to accept...",status.HTTP_401_UNAUTHORIZED)
+        elif kwargs["response"] == 0:
+            if not game.declineGame(player):
+                return Response("This is not your game to decline...",status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response("Invalid response to request. 1 : Accept, 0 : Decline",status.HTTP_400_BAD_REQUEST)
         return True
 
 class RequestGameAPI(ProtectedAPIView):
+    """
+    Requests a new Game
+    """
     authentication_classes = [SessionAuthentication]
     def delete(self,request):
         return Response("",status.HTTP_200_OK)

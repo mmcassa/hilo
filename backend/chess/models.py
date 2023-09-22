@@ -67,6 +67,19 @@ class ChessGame(models.Model):
             moves.append((chess.PIECES[self.moves[i],self.moves[i+1:i+2],self.moves[i+3,i+4]]))
         return moves
     
-    def startGame(self):
+    def declineGame(self,user):
+        if self.opponent != user:
+            return False
+        self.status = chess.GameStatus.MATCH_DECLINED
+        return True
+    def acceptGame(self,user: Player):
+        """
+        Accepts a user and confirms a match if the user matches the opponent or if there was an open request
+        """
+        if self.opponent is None:
+            self.opponent = user
+        elif self.opponent != user:
+            return False
+
         self.status = chess.GameStatus.ACTIVE
         return True
