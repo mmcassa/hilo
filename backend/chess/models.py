@@ -1,7 +1,8 @@
 from django.db import models
-from django.core.validators import MaxValueValidator, RegexValidator
+from django.utils import timezone
+from django.core.validators import MaxValueValidator,MinValueValidator, RegexValidator
 from api import models as usermodels
-import re
+import re, datetime
 import chess
 
 
@@ -9,27 +10,39 @@ import chess
 class Player(models.Model):
     name = models.CharField(max_length=150,blank=True,null=True)
     userid = models.ForeignKey(usermodels.AuthUser,models.DO_NOTHING,blank=True,null=True)
-    
+    rank = models.IntegerField(validators=[MaxValueValidator(3000),MinValueValidator(400)],default=1200)
+    createDate = models.DateField(default=timezone.now())
+    archive = models.BooleanField(default=False)
 
+class Friend(models.Model):
+    player1 = models.ForeignKey(Player,models.DO_NOTHING,related_name="fk_player_friend1")
+    player2 = models.ForeignKey(Player,models.DO_NOTHING,related_name="fk_player_friend2")
+    createDate = models.DateField(default=timezone.now())
+
+class FriendRequests(models.Model):
+    requester = models.ForeignKey(Player,models.DO_NOTHING,related_name="fk_player_friend_requester")
+    requestee = models.ForeignKey(Player,models.DO_NOTHING,related_name="fk_player_friend_requestee")
+    archive = models.BooleanField(default=False)
 
 class ChessGame(models.Model):
     """
-        Chess Game model stores active or complete games
-        Board values are as follow (uppercase implies white piece, lowercase implies black piece) => {
-            0 : Empty,
-            K/k : King,
-            Q/q: Queen,
-            B/b: Bishop,
-            N/n: Knight,
-            R/r: Rook,
-            P/p: Pawn            
-        }
+    Chess Game model stores active or complete games
+    Board values are as follow (uppercase implies white piece, lowercase implies black piece) => {
+        0 : Empty,
+        K/k : King,
+        Q/q: Queen,
+        B/b: Bishop,
+        N/n: Knight,
+        R/r: Rook,
+        P/p: Pawn            
+    }
     """
-    playerWhite = models.ForeignKey(Player,models.DO_NOTHING,related_name="fk_game_player_white_1",blank=True,null=True)
-    playerBlack = models.ForeignKey(Player,models.DO_NOTHING,related_name="fk_game_player_black_1",blank=True,null=True)
+    requester = models.ForeignKey(Player,models.DO_NOTHING,related_name="fk_game_player_owner_1",blank=True,null=True)
+    opponent = models.ForeignKey(Player,models.DO_NOTHING,related_name="fk_game_player_opponent_1",blank=True,null=True)
+    defaultSides = models.BooleanField(default=True) # if defaultSides is True then requester is white
     board = models.CharField(max_length=64,validators=[RegexValidator(r"[kqpbr0]{64}",flags=re.IGNORECASE)],default=chess.DEFAULT_BOARD)
-    moveCount = models.IntegerField(validators=[MaxValueValidator(chess.MAX_MOVES_IN_CHESS)])
-    moves = models.TextField(max_length=5*chess.MAX_MOVES_IN_CHESS)
+    moveCount = models.IntegerField(validators=[MaxValueValidator(chess.MAX_MOVES_IN_CHESS)],default=0)
+    moves = models.TextField(max_length=5*chess.MAX_MOVES_IN_CHESS,default="")
     status = models.SmallIntegerField(choices=chess.GameStatus.choices())
     outcome = models.SmallIntegerField(choices=chess.GameOutcomes.choices(),blank=None,null=None)
     
@@ -53,3 +66,7 @@ class ChessGame(models.Model):
         for i in range(start_offset*5,self.moveCount if end_offset == 0 else end_offset*5,5):
             moves.append((chess.PIECES[self.moves[i],self.moves[i+1:i+2],self.moves[i+3,i+4]]))
         return moves
+    
+    def startGame(self):
+        self.status = chess.GameStatus.ACTIVE
+        return True
