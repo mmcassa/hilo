@@ -2,7 +2,11 @@
     width: 50px;
     height: 40px;
     padding: 10px;
+    * {
+        box-sizing: border-box;
+    }
     .snav-mini-btn-btn {
+        position: relative;
         display: block;
         background-color: transparent;
         width: 30px;
@@ -10,11 +14,34 @@
         border-radius: 8px;
         border: none;
         padding: 3px;
+        transition: all 0.5s;
 
     }
 
+
     .snav-mini-btn-btn.active {
-        background-color: #FFFFFF22;
+        transform: scale(1.3);
         
+
+        
+    }
+    .snav-mini-btn-btn::after  {
+        content: "";
+        background: transparent;
+        width: 5%;
+        border-radius: 25px;
+        height: .2rem;
+        position: absolute;
+        bottom: -.1rem;
+        left: .65rem;
+        // right: 25px;
+        transition: all .5s;
+
+    }
+    .snav-mini-btn-btn.active::after  {
+        background: white;
+        width: 30% !important;
+        // height: .25rem !important;
+
     }
 }

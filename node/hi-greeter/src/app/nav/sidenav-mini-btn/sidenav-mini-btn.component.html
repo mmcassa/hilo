@@ -2,7 +2,7 @@
     <button *ngIf="route === undefined" class="snav-mini-btn-btn">
         <mat-icon color="accent">{{icon}}</mat-icon>
     </button>
-    <a *ngIf="route !== undefined" class="snav-mini-btn-btn" [routerLink]="route" [routerLinkActive]="'active'">
+    <a *ngIf="route !== undefined" class="snav-mini-btn-btn" [routerLink]="route" [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="'active'">
         <mat-icon color="accent">{{icon}}</mat-icon>
     </a>
 </div>

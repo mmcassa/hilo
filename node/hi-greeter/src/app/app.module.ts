@@ -37,6 +37,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { SidenavBarComponent } from './nav/sidenav-bar/sidenav-bar.component';
 import { SidenavMiniBtnComponent } from './nav/sidenav-mini-btn/sidenav-mini-btn.component';
 import { HiloInputDirective } from './shared/directives/hilo-input.directive';
+import { PhpExamplesComponent } from './public/php-examples/php-examples.component';
+import { ChessPageComponent } from './public/chess-page/chess-page.component';
+import { ChessBoardComponent } from './public/chess-page/chess-board/chess-board.component';
+import { ChessSquareComponent } from './public/chess-page/chess-square/chess-square.component';
+import { ChessPieceComponent } from './public/chess-page/chess-piece/chess-piece.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +54,12 @@ import { HiloInputDirective } from './shared/directives/hilo-input.directive';
     AboutmeComponent,
     SidenavBarComponent,
     SidenavMiniBtnComponent,
-    HiloInputDirective
+    HiloInputDirective,
+    PhpExamplesComponent,
+    ChessPageComponent,
+    ChessBoardComponent,
+    ChessSquareComponent,
+    ChessPieceComponent
   ],
   imports: [
     BrowserModule,
