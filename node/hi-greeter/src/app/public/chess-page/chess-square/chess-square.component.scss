@@ -1,5 +1,9 @@
 .board-square {
-    height: 40px;
-    width: 40px;
-    
+    height: 40px !important;
+    width: 40px !important;
+    display: inline-block;
+}
+app-chess-square {
+    height: fit-content;
+    width: fit-content;
 }

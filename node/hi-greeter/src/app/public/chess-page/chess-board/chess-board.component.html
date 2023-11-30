@@ -1,1 +1,8 @@
-<p>chess-board works!</p>
+<!-- <ng-container *ngFor="let r of squares"> -->
+<div *ngFor="let r of squares" class="">
+    <ng-container *ngFor="let c of r">
+        <app-chess-square [isWhite]="c['row'] % 2 == c['column'] % 2" [position]="c['position']"></app-chess-square>
+        <!-- <div class="inline-block">{{c.position}}</div> -->
+    </ng-container>
+</div>
+<!-- </ng-container> -->

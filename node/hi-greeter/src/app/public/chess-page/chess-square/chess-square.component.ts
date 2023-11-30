@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ChessPieceComponent } from '../chess-piece/chess-piece.component';
+import { ChessService } from '../chess.service';
 
 @Component({
   selector: 'app-chess-square',
@@ -7,23 +8,18 @@ import { ChessPieceComponent } from '../chess-piece/chess-piece.component';
   styleUrls: ['./chess-square.component.scss']
 })
 export class ChessSquareComponent implements OnInit {
-  @Input() squareColor: string = "#0000000";
-  @Input() piece: ChessPieceComponent | undefined;
+  @Input() isWhite: boolean = false;
+  @Input() position: string = "";
   @Input() highlight: boolean = false;
+  // @Output() click: EventEmitter = 
 
+  private piece: ChessPieceComponent | undefined;
 
+  constructor(public gameService: ChessService) {
+    
+  }
 
   ngOnInit(): void {
-    let colorRegex = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
-    let regex = new RegExp(colorRegex);
-
-    if (! regex.test(this.squareColor)) {
-      // If user inputs an invalid hex color, set to default
-      this.squareColor = "#000000";
-    }
-
-    
-
     
   }
 
